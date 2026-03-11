@@ -1,0 +1,72 @@
+<div class="dashboard-wrapper">
+  <!-- Top Toolbar -->
+  <div class="toolbar">
+    <span class="toolbar-icon">A</span>
+    <span class="toolbar-title">Material Design</span>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Balance Card -->
+    <div class="balance-card">
+      <h1 class="balance-title">CURRENT BALANCE: {{ balance | currency }}</h1>
+    </div>
+
+    <!-- Transaction Form -->
+    <div class="transaction-card">
+      <div class="form-label">{{ isDeposit ? 'DEPOSIT' : 'CREDIT' }}</div>
+
+      <div class="input-row">
+        <input class="amount-input" type="number" placeholder="Enter Amount" [(ngModel)]="transactionAmount" min="0"
+          step="0.01" (keyup.enter)="submitTransaction()" />
+        <button class="submit-btn" (click)="submitTransaction()">SUBMIT</button>
+      </div>
+
+      <!-- Error / Success Messages -->
+      <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="success-msg" *ngIf="successMessage">{{ successMessage }}</div>
+
+      <!-- Toggle -->
+      <div class="toggle-row">
+        <span class="toggle-label" [class.active]="isDeposit">DEPOSIT</span>
+        <div class="toggle-switch" (click)="toggleMode()" [class.credit]="!isDeposit">
+          <div class="toggle-knob"></div>
+        </div>
+        <span class="toggle-label" [class.active]="!isDeposit">CREDIT</span>
+      </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="transactions-card">
+      <div class="transactions-header">Recent Transactions</div>
+      <table class="transactions-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="amount-col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tx of transactions" [class.deposit-row]="tx.type === 'deposit'"
+            [class.withdrawal-row]="tx.type === 'withdrawal'">
+            <td>{{ tx.date }} - {{ tx.description }}</td>
+            <td></td>
+            <td class="amount-col">{{ tx.amount | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-text">
+      <div>Welcome, User.</div>
+      <div>Please select a transaction.</div>
+    </div>
+    <div class="footer-logo">
+      <span class="logo-icon">A</span>
+      <span class="logo-text">ANGULAR</span>
+    </div>
+  </div>
+</div>
